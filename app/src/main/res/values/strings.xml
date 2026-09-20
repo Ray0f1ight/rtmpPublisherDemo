@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">rtc_demo</string>
+    <string name="camera_permission_denied">相机权限被拒绝，无法开启预览</string>
+    <string name="record_audio_permission_denied">录音权限被拒绝，无法采集音频</string>
+    <string name="camera_open_failed">相机打开失败</string>
+    <string name="internet_permission_denied">缺少网络权限，无法推流</string>
+    <string name="camera_not_ready">相机还没出帧，请先开启预览</string>
+</resources>
