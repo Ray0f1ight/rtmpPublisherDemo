@@ -1,6 +1,8 @@
 package com.example.rtc_demo.rtcManager
 
 import androidx.camera.core.ImageProxy
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.github.faucamp.simplertmp.RtmpHandler
 import kotlinx.coroutines.CoroutineScope
 import yasea.SrsFlvMuxer
@@ -12,6 +14,11 @@ class RtmpPusher(private val scope: CoroutineScope) {
 
     val isStartPush: Boolean
         get() = _isStartPush
+
+    val isStartPushLiveData: LiveData<Boolean>
+        get() = _isStartPushLiveData
+
+    private val _isStartPushLiveData = MutableLiveData(false)
 
     @Volatile
     private var _isStartPush = false
@@ -46,15 +53,21 @@ class RtmpPusher(private val scope: CoroutineScope) {
         encoder.start()
         flvMuxer.start(rtmp)
         _isStartPush = true
+        notifyStartPushLiveData()
     }
 
     fun stop() {
         _isStartPush = false
+        notifyStartPushLiveData()
         mediaCodecEncoder?.apply {
             release()
         }
         mediaCodecEncoder = null
         flvMuxer.stop()
+    }
+
+    private fun notifyStartPushLiveData() {
+        _isStartPushLiveData.value = _isStartPush
     }
 
 

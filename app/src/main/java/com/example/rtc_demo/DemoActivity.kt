@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.Size
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +52,8 @@ class DemoActivity : AppCompatActivity() {
     private val btPause by lazy { findViewById<Button>(R.id.bt_pause) }
 
     private val etRtmp by lazy { findViewById<EditText>(R.id.et_rtmp) }
+
+    private val tvPushStatus by lazy { findViewById<TextView>(R.id.tv_push_status) }
 
     /** 相机是否已开，provider 异步就绪时靠它判断要不要补绑定 */
     private var isPreviewRequested = false
@@ -130,6 +133,9 @@ class DemoActivity : AppCompatActivity() {
     private fun initPusher() {
         pusher = RtmpPusher(lifecycleScope)
         pusher.setRtmpHandler(createRtmpListener())
+        pusher.isStartPushLiveData.observe(this) { isStartPush ->
+            tvPushStatus.text = if (isStartPush) "开始推流" else "未开始"
+        }
     }
 
     private fun startAudioRecord() {
